@@ -10,6 +10,7 @@ import Table, {
   TableHead
 } from 'material-ui/Table';
 import CardRow from "./CardRow"
+import orderBy from "lodash/orderBy";
 
 export default class MainComponent extends React.Component {
   constructor(props) {
@@ -27,6 +28,10 @@ export default class MainComponent extends React.Component {
       deselectOnClickaway: true,
       showCheckboxes: false,
       height: '700px',
+      columnToSort: "name",
+      columnToSearch: "name",
+      sortDirection: "desc",
+      searchTerm: '',
     };
   }
 
@@ -80,9 +85,9 @@ export default class MainComponent extends React.Component {
         <SearchBar
           onChange={(value) => {
             console.log(value)
-            
+            this.setState({searchTerm: value})            
           }}
-          onRequestSearch={() => console.log('onRequestSearch')}
+          onRequestSearch={() => console.log(this.state.searchTerm)}
           style={{
             margin: '0 auto',
             maxWidth: 800
@@ -96,6 +101,16 @@ export default class MainComponent extends React.Component {
           fixedFooter={this.state.fixedFooter}
           selectable={this.state.selectable}
           multiSelectable={this.state.multiSelectable}
+          handleSort={this.state.handleSort}
+          columnToSort={this.state.columnToSort}
+          sortDirection={this.state.sortDirection}
+          data={orderBy(
+            this.state.searchTerm ? this.state.cardData.filter(x =>
+            x[this.state.columnToSearch].toLowerCase().includes(this.state.searchTerm)) : this.state.cardData,
+            this.state.cardData,
+            this.state.columnToSort,
+            this.state.sortDirection
+          )}
         >
           <TableHeader
             displaySelectAll={this.state.showCheckboxes}
@@ -123,15 +138,6 @@ export default class MainComponent extends React.Component {
                   cardText = {card.text}
                 >
                 </CardRow> 
-                 /*<TableRow key={i}>
-                  <TableRowColumn>{card.id}</TableRowColumn>
-                  <TableRowColumn> 
-                    {card.name}
-                  </TableRowColumn>
-                  <TableRowColumn> 
-                    {card.text}
-                  </TableRowColumn>
-                </TableRow> */
               )
           })}
           </TableBody>
