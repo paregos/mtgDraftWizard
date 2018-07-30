@@ -42,7 +42,6 @@ export default class MainComponent extends React.Component {
         this.setState({
           cardData: response.data.cards
       });
-      console.log(this.state);
       this.setState({ isLoading: false });
     })
     .catch(function (error) {
@@ -84,7 +83,6 @@ export default class MainComponent extends React.Component {
       <div>
         <SearchBar
           onChange={(value) => {
-            console.log(value)
             this.setState({searchTerm: value})            
           }}
           onRequestSearch={() => console.log(this.state.searchTerm)}
@@ -130,7 +128,6 @@ export default class MainComponent extends React.Component {
             stripedRows={this.state.stripedRows}
           >
           {cards.map((card, i) => {
-              console.log(card.name.includes(searchTerm))
               return (
                 <CardRow 
                   tableRow = {i} 

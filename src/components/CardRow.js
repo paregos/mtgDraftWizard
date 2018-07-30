@@ -18,7 +18,6 @@ export default class CardRow extends React.Component {
       cardId: this.props.cardId,
       cardName: this.props.cardName,
       cardText: this.props.cardText,
-      show: this.props.show
     }
   }
 
@@ -35,9 +34,7 @@ export default class CardRow extends React.Component {
   }
 
   render() {
-    console.log(this.state.show)
-
-    if (this.state.show) {
+    if (this.props.show) {
       return(
         <TableRow key = {this.state.tableRow}>
           <TableRowColumn>{this.state.cardId}</TableRowColumn>
