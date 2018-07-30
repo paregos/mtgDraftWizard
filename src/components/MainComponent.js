@@ -62,7 +62,7 @@ export default class MainComponent extends React.Component {
 
   render() {
 
-    const { cardData, isLoading } = this.state;
+    const { cardData, isLoading, searchTerm } = this.state;
 
     var cards = cardData ? cardData : {};
 
@@ -130,12 +130,14 @@ export default class MainComponent extends React.Component {
             stripedRows={this.state.stripedRows}
           >
           {cards.map((card, i) => {
+              console.log(card.name.includes(searchTerm))
               return (
                 <CardRow 
                   tableRow = {i} 
                   cardId = {card.id}
                   cardName = {card.name}
                   cardText = {card.text}
+                  show = {card.name.includes(searchTerm)}
                 >
                 </CardRow> 
               )
