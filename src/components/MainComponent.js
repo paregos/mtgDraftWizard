@@ -9,6 +9,7 @@ import Table, {
   TableRowColumn,
   TableHead
 } from 'material-ui/Table';
+import CardRow from "./CardRow"
 
 export default class MainComponent extends React.Component {
   constructor(props) {
@@ -77,7 +78,10 @@ export default class MainComponent extends React.Component {
     return(
       <div>
         <SearchBar
-          onChange={() => console.log('onChange')}
+          onChange={(value) => {
+            console.log(value)
+            
+          }}
           onRequestSearch={() => console.log('onRequestSearch')}
           style={{
             margin: '0 auto',
@@ -112,7 +116,14 @@ export default class MainComponent extends React.Component {
           >
           {cards.map((card, i) => {
               return (
-                <TableRow key={i}>
+                <CardRow 
+                  tableRow = {i} 
+                  cardId = {card.id}
+                  cardName = {card.name}
+                  cardText = {card.text}
+                >
+                </CardRow> 
+                 /*<TableRow key={i}>
                   <TableRowColumn>{card.id}</TableRowColumn>
                   <TableRowColumn> 
                     {card.name}
@@ -120,7 +131,7 @@ export default class MainComponent extends React.Component {
                   <TableRowColumn> 
                     {card.text}
                   </TableRowColumn>
-                </TableRow>
+                </TableRow> */
               )
           })}
           </TableBody>
