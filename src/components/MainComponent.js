@@ -28,9 +28,6 @@ export default class MainComponent extends React.Component {
       deselectOnClickaway: true,
       showCheckboxes: false,
       height: '700px',
-      columnToSort: "name",
-      columnToSearch: "name",
-      sortDirection: "desc",
       searchTerm: '',
     };
   }
@@ -83,7 +80,7 @@ export default class MainComponent extends React.Component {
       <div>
         <SearchBar
           onChange={(value) => {
-            this.setState({searchTerm: value})            
+            this.setState({searchTerm: value.toLowerCase()})            
           }}
           onRequestSearch={() => console.log(this.state.searchTerm)}
           style={{
@@ -99,16 +96,6 @@ export default class MainComponent extends React.Component {
           fixedFooter={this.state.fixedFooter}
           selectable={this.state.selectable}
           multiSelectable={this.state.multiSelectable}
-          handleSort={this.state.handleSort}
-          columnToSort={this.state.columnToSort}
-          sortDirection={this.state.sortDirection}
-          data={orderBy(
-            this.state.searchTerm ? this.state.cardData.filter(x =>
-            x[this.state.columnToSearch].toLowerCase().includes(this.state.searchTerm)) : this.state.cardData,
-            this.state.cardData,
-            this.state.columnToSort,
-            this.state.sortDirection
-          )}
         >
           <TableHeader
             displaySelectAll={this.state.showCheckboxes}
@@ -134,7 +121,7 @@ export default class MainComponent extends React.Component {
                   cardId = {card.id}
                   cardName = {card.name}
                   cardText = {card.text}
-                  show = {card.name.includes(searchTerm)}
+                  show = {card.name.toLowerCase().includes(searchTerm)}
                 >
                 </CardRow> 
               )
