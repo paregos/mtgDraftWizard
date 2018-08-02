@@ -18,6 +18,7 @@ export default class CardRow extends React.Component {
       cardId: this.props.cardId,
       cardName: this.props.cardName,
       cardText: this.props.cardText,
+      hover: false,
     }
   }
 
@@ -33,21 +34,28 @@ export default class CardRow extends React.Component {
   tick() {
   }
 
+  mouseOn = () => {
+    this.setState({ hover: true });
+  }
+  mouseOff = () => {
+    this.setState({ hover: false });
+  }
+
   render() {
     if (this.props.show) {
-      return(
-        <TableRow key = {this.state.tableRow}>
+      return (
+        <TableRow key={this.state.tableRow}>
           <TableRowColumn>{this.state.cardId}</TableRowColumn>
-          <TableRowColumn> 
+          <TableRowColumn>
             {this.state.cardName}
           </TableRowColumn>
-          <TableRowColumn> 
+          <TableRowColumn>
             {this.state.cardText}
           </TableRowColumn>
         </TableRow>
       )
     }
 
-    return(null)
+    return (null)
   }
 }
