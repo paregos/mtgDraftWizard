@@ -18,6 +18,7 @@ export default class CardRow extends React.Component {
       cardId: this.props.cardId,
       cardName: this.props.cardName,
       cardText: this.props.cardText,
+      imageSource: this.props.imageSource,
       hover: false,
     }
   }
@@ -41,10 +42,23 @@ export default class CardRow extends React.Component {
     this.setState({ hover: false });
   }
 
+  onMouseEnter = () => {
+    console.log("mouse entered");
+    console.log(this.state.imageSource)
+    this.props.changeImageSource(this.state.imageSource)
+  }
+
   render() {
     if (this.props.show) {
       return (
-        <TableRow key={this.state.tableRow}>
+
+        <TableRow
+          key={this.state.tableRow}
+          onMouseEnter={
+            this.onMouseEnter
+          }
+        >
+
           <TableRowColumn>{this.state.cardId}</TableRowColumn>
           <TableRowColumn>
             {this.state.cardName}
@@ -53,6 +67,7 @@ export default class CardRow extends React.Component {
             {this.state.cardText}
           </TableRowColumn>
         </TableRow>
+
       )
     }
 

@@ -31,6 +31,7 @@ export default class MainComponent extends React.Component {
       searchTerm: '',
       mousex: 0,
       mousey: 0,
+      imageSource: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=447137&type=card"
     };
   }
 
@@ -60,8 +61,10 @@ export default class MainComponent extends React.Component {
 
   _onMouseMove(e) {
     this.setState({ mousex: e.pageX, mousey: e.pageY });
-    console.log("mousex: " + e.screenX + " mousey: " + e.screenY)
-    console.log("pagex: " + e.pageX + " pagey: " + e.pageY)
+  }
+
+  changeImageSource(newImageSource) {
+    this.setState({imageSource:newImageSource});
   }
 
   render() {
@@ -87,6 +90,7 @@ export default class MainComponent extends React.Component {
     return (
       <div onMouseMove={this._onMouseMove.bind(this)}>
         <CardImage
+          imageSource={this.state.imageSource}
           mousex={this.state.mousex}
           mousey={this.state.mousey}
         />
@@ -135,7 +139,10 @@ export default class MainComponent extends React.Component {
                     cardId={card.id}
                     cardName={card.name}
                     cardText={card.text}
+                    imageSource={card.imageUrl}
+                    changeImageSource = {this.changeImageSource.bind(this)}
                     show={card.name.toLowerCase().includes(searchTerm)}
+
                   >
                   </CardRow>
                 )

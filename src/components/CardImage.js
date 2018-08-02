@@ -30,15 +30,17 @@ export default class CardImage extends React.Component {
     tick() {
     }
 
-    mouseOn = () => {
-        this.setState({ hover: true });
-    }
-    mouseOff = () => {
-        this.setState({ hover: false });
-    }
+    // mouseOn = () => {
+    //     this.setState({ hover: true });
+    // }
+    // mouseOff = () => {
+    //     this.setState({ hover: false });
+    // }
 
     render() {
-        if (this.props.imageSource != "") {
+        const imageSource = this.props.imageSource
+
+        if (imageSource != "") {
             const styles = {
                 position: 'absolute',
                 top: this.props.mousey,
@@ -46,7 +48,7 @@ export default class CardImage extends React.Component {
               };
             return (
                 <div>
-                    <img src="https://material-ui.com/static/images/cards/contemplative-reptile.jpg" style={styles}/>
+                    <img src= {imageSource} style={styles}/>
                 </div>
             )
         }
