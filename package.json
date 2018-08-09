@@ -30,9 +30,12 @@
     "material-ui": "^0.20.0",
     "material-ui-search-bar": "^0.4.2",
     "moment-timezone": "^0.5.14",
+    "node-pre-gyp": "^0.10.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-moment": "^0.7.0",
-    "request": "^2.85.0"
+    "request": "^2.85.0",
+    "sequelize": "^4.38.0",
+    "sqlite3": "^4.0.2"
   }
 }

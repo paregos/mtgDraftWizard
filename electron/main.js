@@ -24,6 +24,25 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  mainWindow.webContents.once('did-finish-load', () => {
+  const watcher = chokidar.watch(
+    logPath,
+    {
+      ignored: /(^|[\/\\])\../,
+      awaitWriteFinish : true,
+      usePolling: true,
+      interval: 100
+    });
+  
+    watcher.on('change', (path, stats) => {
+      updateDraftStatus();
+    })
+
+    watcher.on('ready', (path, stats) => {
+      updateDraftStatus();
+    })
+  })
 }
 
 // This method will be called when Electron has finished
@@ -51,24 +70,8 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-//const logPath = 'C:\\users\\hanzhi\\desktop\\output_log.txt';
-const logPath = 'C:\\Users\\Hanzhi\\AppData\\LocalLow\\Wizards Of The Coast\\MTGA\\output_log.txt';
-const watcher = chokidar.watch(
-  logPath,
-  {
-    ignored: /(^|[\/\\])\../,
-    awaitWriteFinish : true,
-    usePolling: true,
-    interval: 100
-  });
-
-watcher.on('change', (path, stats) => {
-  updateDraftStatus();
-})
-
-watcher.on('ready', (path, stats) => {
-  updateDraftStatus();
-})
+const logPath = 'C:\\users\\hanzhi\\desktop\\output_log - Copy.txt';
+//const logPath = 'C:\\Users\\Hanzhi\\AppData\\LocalLow\\Wizards Of The Coast\\MTGA\\output_log.txt';
 
 function updateDraftStatus() {
   fs.readFile(logPath, (err, data) => {

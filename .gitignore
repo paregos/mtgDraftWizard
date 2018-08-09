@@ -70,3 +70,6 @@ electron/src/client.min.js
 #generated user data
 app/data/testData.json
 electron/cards.json
+
+#database
+db.sqlite
