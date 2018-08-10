@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     draftaholicsRating: {
       type: DataTypes.FLOAT,
       allowNull: true
+    },
+    lrcRating: {
+      type: DataTypes.FLOAT,
+      allowNull: true
     }
   }, {
     tableName: 'card',

@@ -24,7 +24,13 @@ const colors = [
   'black',
   'red',
   'green',
-  'gold-artifacts-and-lands'
+  // Most sets have golds, artifacts, and lands grouped together
+  'gold-artifacts-and-lands',
+  // Kaladesh had artifacts separate
+  'gold-lands',
+  'artifacts',
+  // Aether Revolt didn't have lands
+  'artifacts-and-gold'
 ]
 
 function parsePage(url) {

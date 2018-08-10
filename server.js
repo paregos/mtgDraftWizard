@@ -37,6 +37,10 @@ app.post('/tiers', (req, res) => {
         totalRating += card.draftaholicsRating;
         ratings++;
       }
+      if(typeof card.lrcRating == 'number') {
+        totalRating += card.lrcRating;
+        ratings++;
+      }
       if(ratings == 0) {
         return '?';
       } else {
