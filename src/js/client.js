@@ -8,9 +8,9 @@ import MainComponent from "../components/MainComponent";
 const title = "MTG Draft Wizard";
 
 const App = () => (
-  <MuiThemeProvider>
-    <MainComponent />
-  </MuiThemeProvider>
+    <MuiThemeProvider>
+        <MainComponent />
+    </MuiThemeProvider>
 );
 
 ReactDOM.render(<App />, document.getElementById("app"));
