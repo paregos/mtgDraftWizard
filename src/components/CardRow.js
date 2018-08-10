@@ -1,6 +1,6 @@
-import React from 'react'
-import SearchBar from 'material-ui-search-bar'
-import axios from 'axios'
+import React from "react";
+import SearchBar from "material-ui-search-bar";
+import axios from "axios";
 import Table, {
   TableBody,
   TableHeader,
@@ -8,7 +8,7 @@ import Table, {
   TableRow,
   TableRowColumn,
   TableHead
-} from 'material-ui/Table';
+} from "material-ui/Table";
 
 export default class CardRow extends React.Component {
   constructor(props) {
@@ -19,58 +19,40 @@ export default class CardRow extends React.Component {
       cardName: this.props.cardName,
       cardText: this.props.cardText,
       imageSource: this.props.imageSource,
-      hover: false,
-    }
+      hover: false
+    };
   }
 
-  componentWillMount() {
-  }
+  componentWillMount() {}
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
-  tick() {
-  }
+  tick() {}
 
   mouseOn = () => {
     this.setState({ hover: true });
-  }
+  };
   mouseOff = () => {
     this.setState({ hover: false });
-  }
+  };
 
   onMouseEnter = () => {
-    console.log("mouse entered");
-    console.log(this.state.imageSource)
-    this.props.changeImageSource(this.state.imageSource)
-  }
+    this.props.changeImageSource(this.state.imageSource);
+  };
 
   render() {
     if (this.props.show) {
       return (
-
-        <TableRow
-          key={this.state.tableRow}
-          onMouseEnter={
-            this.onMouseEnter
-          }
-        >
-
+        <TableRow key={this.state.tableRow} onMouseEnter={this.onMouseEnter}>
           <TableRowColumn>{this.state.cardId}</TableRowColumn>
-          <TableRowColumn>
-            {this.state.cardName}
-          </TableRowColumn>
-          <TableRowColumn>
-            {this.state.cardText}
-          </TableRowColumn>
+          <TableRowColumn>{this.state.cardName}</TableRowColumn>
+          <TableRowColumn>{this.state.cardText}</TableRowColumn>
         </TableRow>
-
-      )
+      );
     }
 
-    return (null)
+    return null;
   }
 }

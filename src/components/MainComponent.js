@@ -1,6 +1,6 @@
-import React from 'react'
-import SearchBar from 'material-ui-search-bar'
-import axios from 'axios'
+import React from "react";
+import SearchBar from "material-ui-search-bar";
+import axios from "axios";
 import Table, {
   TableBody,
   TableHeader,
@@ -8,9 +8,9 @@ import Table, {
   TableRow,
   TableRowColumn,
   TableHead
-} from 'material-ui/Table';
-import CardRow from "./CardRow"
-import CardImage from "./CardImage"
+} from "material-ui/Table";
+import CardRow from "./CardRow";
+import CardImage from "./CardImage";
 
 export default class MainComponent extends React.Component {
   constructor(props) {
@@ -27,48 +27,45 @@ export default class MainComponent extends React.Component {
       enableSelectAll: false,
       deselectOnClickaway: true,
       showCheckboxes: false,
-      height: '700px',
-      searchTerm: '',
+      height: "700px",
+      searchTerm: "",
       mousex: 0,
       mousey: 0,
-      imageSource: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=447137&type=card"
+      imageSource:
+        "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=447137&type=card"
     };
   }
 
   componentWillMount() {
     this.setState({ isLoading: true });
-    axios.get('..//M19.json') // JSON File Path
+    axios
+      .get("..//M19.json") // JSON File Path
       .then(response => {
         this.setState({
           cardData: response.data.cards
         });
         this.setState({ isLoading: false });
       })
-      .catch(function (error) {
+      .catch(function(error) {
         console.log(error);
       });
-
   }
 
-  componentDidMount() {
-  }
+  componentDidMount() {}
 
-  componentWillUnmount() {
-  }
+  componentWillUnmount() {}
 
-  tick() {
-  }
+  tick() {}
 
   _onMouseMove(e) {
     this.setState({ mousex: e.pageX, mousey: e.pageY });
   }
 
   changeImageSource(newImageSource) {
-    this.setState({imageSource:newImageSource});
+    this.setState({ imageSource: newImageSource });
   }
 
   render() {
-
     const { cardData, isLoading, searchTerm } = this.state;
 
     var cards = cardData ? cardData : {};
@@ -79,12 +76,12 @@ export default class MainComponent extends React.Component {
           <p>Loading ...</p>
           <div class="lds-css ng-scope">
             <div style={{ width: "100%", height: "100%" }} class="lds-eclipse">
-              <div></div>
-              <div></div>
+              <div />
+              <div />
             </div>
           </div>
         </div>
-      )
+      );
     }
 
     return (
@@ -95,19 +92,18 @@ export default class MainComponent extends React.Component {
           mousey={this.state.mousey}
         />
         <SearchBar
-          onChange={(value) => {
-            this.setState({ searchTerm: value.toLowerCase() })
+          onChange={value => {
+            this.setState({ searchTerm: value.toLowerCase() });
           }}
           onRequestSearch={() => console.log(this.state.searchTerm)}
           style={{
-            margin: '0 auto',
+            margin: "0 auto",
             maxWidth: 800
           }}
         />
 
         <div>
           <Table
-
             height={this.state.height}
             style={{ "margin-top": 20, width: 1200 }}
             fixedHeader={this.state.fixedHeader}
@@ -121,9 +117,13 @@ export default class MainComponent extends React.Component {
               enableSelectAll={this.state.enableSelectAll}
             >
               <TableRow>
-                <TableHeaderColumn tooltip="Unique Card ID">ID</TableHeaderColumn>
+                <TableHeaderColumn tooltip="Unique Card ID">
+                  ID
+                </TableHeaderColumn>
                 <TableHeaderColumn tooltip="Card Name">Name</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Card Text">Card Text</TableHeaderColumn>
+                <TableHeaderColumn tooltip="Card Text">
+                  Card Text
+                </TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -140,17 +140,15 @@ export default class MainComponent extends React.Component {
                     cardName={card.name}
                     cardText={card.text}
                     imageSource={card.imageUrl}
-                    changeImageSource = {this.changeImageSource.bind(this)}
+                    changeImageSource={this.changeImageSource.bind(this)}
                     show={card.name.toLowerCase().includes(searchTerm)}
-
-                  >
-                  </CardRow>
-                )
+                  />
+                );
               })}
             </TableBody>
           </Table>
         </div>
       </div>
-    )
+    );
   }
 }
