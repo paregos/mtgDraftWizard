@@ -4,7 +4,7 @@
 
 const axios = require('axios');
 
-const db = require('./model/db');
+const db = require('../model/db');
 
 // Set name as used in the url of the page
 const sets = [
@@ -75,6 +75,7 @@ function parsePage(url) {
         }, {});
     })
     .then(ratings => {
+      console.log(`LSV: GET ${url}`)
       return Promise.all(Object.keys(ratings).map(name => {
         return db.Card.update(
           { lsvRating: ratings[name] },
@@ -82,15 +83,19 @@ function parsePage(url) {
         )
       }))
     })
-    .then(() => {
-      console.log('Done writing to database');
+    .catch(err => {
+      console.error(`LSV: ERR ${url}`)
     })
 }
 
-db.syncedPromise.then(() => {
-  sets.forEach(set => {
-    colors.forEach(color => {
-      parsePage(`https://www.channelfireball.com/articles/${set}-limited-set-review-${color}`)
-    })
-  })
-});
+function scrape() {
+  return db.syncedPromise.then(() => {
+    return Promise.all(sets.map(set => {
+      return Promise.all(colors.map(color => {
+        return parsePage(`https://www.channelfireball.com/articles/${set}-limited-set-review-${color}`)
+      }))
+    }))
+  });
+}
+
+module.exports = scrape;

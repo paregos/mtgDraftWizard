@@ -12,7 +12,10 @@ const syncedPromise = sequelize
   .authenticate()
   .then(() => {
     console.log('Syncing Database...');
-    return sequelize.sync({ force: false })
+    if(process.env.MTGA_RESET_TABLES == 'true') {
+      console.log('Rebuilding tables...');
+    }
+    return sequelize.sync({ force: process.env.MTGA_RESET_TABLES == 'true' })
   })
   .then(() => {
     console.log('Database Synced');

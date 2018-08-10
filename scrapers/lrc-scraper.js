@@ -1,8 +1,10 @@
 const axios = require('axios');
 const GoogleSpreadsheet = require('google-spreadsheet');
 
-const db = require('./model/db');
+const db = require('../model/db');
 
+// Google API credentials
+// TODO: change to use environment variable
 const credentials = {
   "type": "service_account",
   "project_id": "mtga-draft-wizard",
@@ -39,7 +41,7 @@ const sets = [
  */
 
 function parsePage(url) {
-  axios.get(url)
+  return axios.get(url)
     .then(res => {
       // The page embeds an iframe to show a google sheets table
       const tableIframeUrl = res.data.match(/<iframe width="100%".+?>/g)[0].slice(62, -2);
@@ -54,7 +56,6 @@ function parsePage(url) {
     })
     .then(res => {
       sheetId = res.data.url.match(/\/d\/.+?\//g)[0].slice(3, -1);
-      console.log(sheetId);
       const doc = new GoogleSpreadsheet(sheetId);
 
       return (
@@ -100,10 +101,13 @@ function parsePage(url) {
           });
         })
         .then(rows => {
+          console.log(`LRC: GET ${url}`);
+
           // Use the rating of the top rated card as the base (100%)
           const maxRating = rows[0].numericgrade;
-          const minRating = rows[row.length - 1].ELO;
+          const minRating = rows[rows.length - 1].numericgrade;
           const ratingRange = maxRating - minRating;
+
           return Promise.all(rows.map(row => {
             return db.Card.update(
               { lrcRating: (row.numericgrade - minRating) / ratingRange * 100 },
@@ -111,16 +115,20 @@ function parsePage(url) {
             );
           }))
         })
-        .then(() => {
-          console.log('Done writing to database');
-        })
 
       )
     })
+    .catch(err => {
+      console.error(`LRC: ERR ${url}`);
+    })
 }
 
-db.syncedPromise.then(() => {
-  sets.forEach(set => {
-    parsePage(`https://www.mtgcommunityreview.com/${set}`);
-  })  
-})
+function scrape() {
+  return db.syncedPromise.then(() => {
+    return Promise.all(sets.map(set => {
+      return parsePage(`https://www.mtgcommunityreview.com/${set}`);
+    }))
+  })
+}
+
+module.exports = scrape;
