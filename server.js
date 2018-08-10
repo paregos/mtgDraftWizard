@@ -2,6 +2,7 @@ const express = require('express');
 const dateFormat = require('dateformat');
 const request = require('request');
 const bodyParser = require('body-parser');
+const Op = require('sequelize').Op;
 
 const db = require('./model/db');
 
@@ -22,11 +23,21 @@ app.post('/tiers', (req, res) => {
   if(!req.body.draftPack) return res.status(400).send('draftPack not set');
   if(!req.body.pickedCards) return res.status(400).send('pickedCards not set');
 
-  Promise.all(req.body.draftPack.map(cardId => {
-    return db.Card.findById(cardId).then(card => {
-      if(!card) {
-        return '?';
+  db.Card.findAll({
+    where: {
+      id: {
+        [Op.or]: req.body.draftPack
       }
+    },
+    raw: true
+  })
+  .then(cards => {
+    // Create dummy cards to fill space for cards not in the database
+    while(cards.length < req.body.draftPack.length) {
+      cards.push({ });
+    }
+
+    cards = cards.map(card => {
       let ratings = 0;
       let totalRating = 0;
       if(typeof card.lsvRating == 'number') {
@@ -41,19 +52,29 @@ app.post('/tiers', (req, res) => {
         totalRating += card.lrcRating;
         ratings++;
       }
+
       if(ratings == 0) {
-        return '?';
+        return {
+          ...card,
+          rating: -1
+        }
       } else {
-        return totalRating / ratings;
+        return {
+          ...card,
+          rating: totalRating / ratings
+        }
       }
     });
-  }))
-  .then(tiers => {
-    return res.status(200).send({
+
+    cards.sort((a, b) => {
+      return b.rating - a.rating;
+    })
+    console.log(cards);
+    res.status(200).send({
       ...req.body,
-      tiers
+      processedCards: cards
     });
-  });
+  })
 });
 
 app.get('*', (req, res) => {

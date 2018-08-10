@@ -6,6 +6,7 @@ import axios from 'axios'
 
 import { getCardInfo } from './helpers/CardInfo'
 import DraftTierList from './components/DraftTierList'
+import InfoWindow from './components/InfoWindow'
 
 const title = 'MTG Draft Wizard';
 const TIER_URL = 'http://localhost:3010/tiers'
@@ -15,11 +16,15 @@ class App extends React.Component {
     super(props);
     this.state = {
       draftState: {
+        draftId: 0,
         packNumber: 0,
         pickNumber: 0,
         draftPack: [],
-        pickedCards: []
-      }
+        pickedCards: [],
+        processedCards: []
+      },
+      hoverIndex: 0,
+      hovering: false
     }
   }
 
@@ -28,6 +33,7 @@ class App extends React.Component {
       console.log(event, data);
       data.draftPack = data.draftPack || [];
       data.pickedCards = data.pickedCards || [];
+      data.processedCards = data.processedCards || [];
       this.setState({
         draftState: data
       })
@@ -36,8 +42,9 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     console.log(this.state.draftState);
-    if(_.isEqual(prevState.draftState.draftPack, this.state.draftState.draftPack) &&
-       _.isEqual(prevState.draftState.pickedCards, this.state.draftState.pickedCards)) {
+    if(_.isEqual(prevState.draftState.draftId, this.state.draftState.draftId) &&
+       _.isEqual(prevState.draftState.packNumber, this.state.draftState.packNumber) && 
+       _.isEqual(prevState.draftState.pickNumber, this.state.draftState.pickNumber)) {
       return;
     }
 
@@ -51,29 +58,65 @@ class App extends React.Component {
         //   return;
         // }
 
+        console.log(res.data);
+
         this.setState({
           draftState: {
             ...this.state.draftState,
-            tiers: res.data.tiers
+            processedCards: res.data.processedCards
           }
         })
       })
   }
 
+  hoverOver(index) {
+    this.setState({
+      hoverIndex: index,
+      hovering: true
+    });
+  }
+
+  hoverLeave() {
+    this.setState({
+      hovering: false
+    })
+  }
+
   render() {
     return (
-      <div>
-        <DraftTierList
-          tiers={this.state.draftState.tiers}
-          cards={
-            this.state.draftState.draftPack.map(id => {
-              return getCardInfo(id);
-            })} />
-        ...
-        <DraftTierList cards={
-          this.state.draftState.pickedCards.map(id => {
-            return getCardInfo(id);
-          })} />
+      <div style={{
+        display: 'table'
+      }}>
+        <div style={{
+          display: 'table-cell'
+        }}>
+          <InfoWindow
+            card={this.state.draftState.processedCards[this.state.hoverIndex]}
+            show={this.state.hovering}
+            index={this.state.hoverIndex}
+          />
+        </div>
+        <div style={{
+          display: 'table-cell',
+          borderRadius: 2,
+          boxShadow: '0px 2px 5px 0px rgba(0,0,0,0.5)',
+          WebkitAppRegion: 'drag',
+          backgroundColor: 'white'
+        }}>
+          <DraftTierList
+            hoverOver={this.hoverOver.bind(this)}
+            hoverLeave={this.hoverLeave.bind(this)}
+            processedCards={this.state.draftState.processedCards.map(card => {
+              return {
+                ...card,
+                ...getCardInfo(card.id)
+              }
+            })}
+            cards={
+              this.state.draftState.draftPack.map(id => {
+                return getCardInfo(id);
+              })} />
+        </div>
       </div>
     )
   }

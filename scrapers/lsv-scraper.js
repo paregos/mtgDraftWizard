@@ -3,6 +3,7 @@
  */
 
 const axios = require('axios');
+const cheerio = require('cheerio');
 
 const db = require('../model/db');
 
@@ -40,7 +41,7 @@ function parsePage(url) {
       // Note: sometimes cards are grouped together (e.g land cycles)
       return res.data
         .replace(/<h1>Ratings Scale<\/h1>/g, '')
-        .match(/<h1>.+?<\/h1>[\s\S]+?<h3>Limited:.+?<\/h3>/g)
+        .match(/<h1>.+?<\/h1>[\s\S]+?<h3>Limited:.+?<\/h3>[\s\S]+?<p>[\s\S]+?<\/p>/g)
         .reduce((acc, html) => {
           let rating = html.match(/<h3>Limited: .+?<\/h3>/g)[0].slice(13, -5);
           // Ratings are out of 5.0. Normalise to be out of 100
@@ -55,16 +56,25 @@ function parsePage(url) {
             rating = parseFloat(rating) * 20
           }
 
-          // Don't add the rating if it's not a number
-          if(isNaN(rating)) {
-            return acc;
+          const descriptionHtml = html.match(/<p>[\s\S]+?<\/p>/g);
+          let description;
+          if(descriptionHtml) {
+            const $ = cheerio.load(descriptionHtml[0]);
+            description = $('p').text();
           }
 
           // Get all the cards being rated
           let cards = {};
           html.match(/data-name=".+?"/g).forEach(cardName => {
             cardName = cardName.slice(11, -1);
-            cards[cardName] = rating;
+            cards[cardName] = {};
+            // Don't add the rating if it's NaN
+            if(!isNaN(rating)) {
+              cards[cardName].rating = rating;
+            }
+            if(description) {
+              cards[cardName].description = description;
+            }
           })
 
           // Add it to the list
@@ -74,17 +84,17 @@ function parsePage(url) {
           }
         }, {});
     })
-    .then(ratings => {
+    .then(cards => {
       console.log(`LSV: GET ${url}`)
-      return Promise.all(Object.keys(ratings).map(name => {
+      return Promise.all(Object.keys(cards).map(name => {
         return db.Card.update(
-          { lsvRating: ratings[name] },
+          { lsvRating: cards[name].rating, lsvDescription: cards[name].description },
           { where: { name: name } }
         )
       }))
     })
     .catch(err => {
-      console.error(`LSV: ERR ${url}`)
+      console.error(`LSV: ERR ${url}`);
     })
 }
 

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import CardSymbol from './CardSymbol'
+import RatingBar from './RatingBar'
 
 const colors = {
   W: '#FAFEFD',
@@ -32,28 +33,37 @@ export default class CardRow extends React.Component {
     })
 
     return (
-      <div>
-        <div style={{
-          display: 'inline-block',
-          width: 50
-        }}>
-          {this.props.tier}
-        </div>
-        <div style={{
+      <div style={{
+        margin: 10,
+        display: 'table'
+      }}>
+        <div className='card-header' style={{
           display: 'inline-block',
           backgroundColor: color,
-          border: '1px solid black',
-          borderRadius: 10,
+          borderRadius: 2,
           padding: 5,
           fontFamily: 'beleren',
-          width: 250
-        }}>
+          width: 250,
+          WebkitAppRegion: 'no-drag'
+        }}
+        onMouseEnter={this.props.onMouseEnter}
+        onMouseLeave={this.props.onMouseLeave}
+        >
           {card.name}
           <div style={{
             float: 'right'
           }}>
             {cost}
           </div>
+        </div>
+        <div style={{
+          display: 'table-cell',
+          padding: 10
+        }}>
+          <RatingBar
+            width={50}
+            height={10}
+            progress={card.rating / 100} />
         </div>
       </div>
     )

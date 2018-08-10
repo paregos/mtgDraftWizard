@@ -32,7 +32,7 @@ function scrape() {
             const ratingRange = maxRating - minRating;
             return Promise.all(res.data.map(card => {
               return db.Card.update(
-                { draftaholicsRating: (card.ELO - minRating) / ratingRange * 100 },
+                { draftaholicsRating: ((card.ELO - minRating) / ratingRange * 100).toFixed(1) },
                 { where: { name: card.CardName }}
               );
             }))

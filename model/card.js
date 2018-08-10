@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.FLOAT,
       allowNull: true
     },
+    lsvDescription: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
     draftaholicsRating: {
       type: DataTypes.FLOAT,
       allowNull: true

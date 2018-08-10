@@ -110,7 +110,7 @@ function parsePage(url) {
 
           return Promise.all(rows.map(row => {
             return db.Card.update(
-              { lrcRating: (row.numericgrade - minRating) / ratingRange * 100 },
+              { lrcRating: ((row.numericgrade - minRating) / ratingRange * 100).toFixed(1) },
               { where: { name: row.name}}
             );
           }))

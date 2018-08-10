@@ -26,6 +26,7 @@
     "axios": "^0.18.0",
     "babel-preset-env": "^1.6.1",
     "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
     "dateformat": "^3.0.3",
     "google-spreadsheet": "^2.0.5",
     "material-ui": "^0.20.0",
