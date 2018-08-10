@@ -16,14 +16,6 @@ export default class CardRow extends React.Component {
         };
     }
 
-    componentWillMount() {}
-
-    componentDidMount() {}
-
-    componentWillUnmount() {}
-
-    tick() {}
-
     mouseOn = () => {
         this.setState({ hover: true });
     };
