@@ -17,7 +17,9 @@ export default class MainComponent extends React.Component {
 
     componentDidMount() {
         this.setState({ isLoading: true });
-        var baseUrl = process.env.BASE_URL ? process.env.BASE_URL : "http://localhost:3010";
+        console.log(process.env);
+        var baseUrl = process.env.ENVIRONMENT == "dev" ? "http://localhost:3010" : "https://mtgdraftwizard.herokuapp.com";
+        console.log(baseUrl);
         axios
             .get(baseUrl + "/cards/all") // JSON File Path
             .then((response) => {
