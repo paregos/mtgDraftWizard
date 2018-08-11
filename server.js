@@ -3,6 +3,7 @@ const dateFormat = require("dateformat");
 const request = require("request");
 const bodyParser = require("body-parser");
 const Op = require("sequelize").Op;
+const cors = require("cors");
 
 const db = require("./model/db");
 
@@ -12,15 +13,12 @@ const router = express.Router();
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/src"));
+app.use(cors({ origin: "http://localhost:8080" }));
 
 app.set("views", __dirname);
 app.set("view engine", "ejs");
 app.engine("html", require("ejs").renderFile);
 
-app.get("/test", (req, res) => {
-    res.status(202).send("test");
-    console.log("test");
-});
 app.post("/tiers", (req, res) => {
     if (typeof req.body.packNumber != "number") return res.status(400).send("packNumber not set");
     if (typeof req.body.pickNumber != "number") return res.status(400).send("pickNumber not set");
@@ -76,6 +74,22 @@ app.post("/tiers", (req, res) => {
         res.status(200).send({
             ...req.body,
             processedCards: cards
+        });
+    });
+});
+
+app.get("/cards/all", (req, res) => {
+    console.log("in here");
+    db.Card.findAll({
+        raw: true
+    }).then((cards) => {
+        cards = cards.sort((a, b) => {
+            return a.name.toUpperCase().localeCompare(b.name.toUpperCase());
+        });
+        console.log(cards);
+        res.status(200).send({
+            ...req.body,
+            cards: cards
         });
     });
 });

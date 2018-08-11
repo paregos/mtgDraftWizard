@@ -26,7 +26,9 @@ export default class CardImage extends Component {
                 transform: `translateX(${this.props.mousex + offsetX}px) translateY(${this.props.mousey + offsetY}px)`,
                 top: "0",
                 left: "0",
-                pointerEvents: "none"
+                pointerEvents: "none",
+                width: `${this.state.loading ? "2em" : "20vw"}`,
+                minWidth: `${this.state.loading ? "0em" : "6em"}`
             };
             return (
                 <div>

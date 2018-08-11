@@ -15,11 +15,12 @@ export default class MainComponent extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({ isLoading: true });
         axios
-            .get("..//M19.json") // JSON File Path
+            .get("http://localhost:3010/cards/all") // JSON File Path
             .then((response) => {
+                console.log(response);
                 this.setState({
                     cardData: response.data.cards
                 });
@@ -63,7 +64,7 @@ export default class MainComponent extends React.Component {
                 />
 
                 <div>
-                    <Table height="700px" style={{ "margin-top": 20, width: 1200 }} fixedHeader={true} fixedFooter={false} selectable={true} multiSelectable={false}>
+                    <Table height="700px" style={{ marginTop: 20, width: 1200 }} fixedHeader={true} fixedFooter={false} selectable={true} multiSelectable={false}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false} enableSelectAll={false}>
                             <TableRow>
                                 <TableHeaderColumn tooltip="Unique Card ID">ID</TableHeaderColumn>
@@ -75,6 +76,7 @@ export default class MainComponent extends React.Component {
                             {cards.map((card, i) => {
                                 return (
                                     <CardRow
+                                        key={i}
                                         tableRow={i}
                                         cardId={card.id}
                                         cardName={card.name}
