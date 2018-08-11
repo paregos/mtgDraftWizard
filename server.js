@@ -3,6 +3,7 @@ const dateFormat = require("dateformat");
 const request = require("request");
 const bodyParser = require("body-parser");
 const Op = require("sequelize").Op;
+const cors = require("cors");
 
 const db = require("./model/db");
 
@@ -12,6 +13,7 @@ const router = express.Router();
 
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/src"));
+app.use(cors({ origin: "http://localhost:8080" }));
 
 app.set("views", __dirname);
 app.set("view engine", "ejs");
@@ -81,11 +83,12 @@ app.get("/cards/all", (req, res) => {
     db.Card.findAll({
         raw: true
     }).then((cards) => {
-        cards.sort((a, b) => {
-            return a.name - b.name;
+        cards = cards.sort((a, b) => {
+            return a.name.toUpperCase().localeCompare(b.name.toUpperCase());
         });
         console.log(cards);
         res.status(200).send({
+            ...req.body,
             cards: cards
         });
     });
