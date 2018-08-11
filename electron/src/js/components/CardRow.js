@@ -27,10 +27,15 @@ export default class CardRow extends React.Component {
       color = colors.gold;
     }
 
+    let cost;
     // Get cost symbol images
-    const cost = card.cost.match(/{.+?}/g).map(symbol => {
-      return <CardSymbol symbol={symbol.slice(1, -1)} />
-    })
+    if(!card.cost) {
+      cost = null;
+    } else {
+      cost = card.cost.match(/{.+?}/g).map(symbol => {
+        return <CardSymbol symbol={symbol.slice(1, -1)} />
+      })
+    }
 
     return (
       <div style={{

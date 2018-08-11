@@ -31,6 +31,12 @@ class App extends React.Component {
   componentDidMount() {
     ipcRenderer.on('draftStateUpdate', (event, data) => {
       console.log(event, data);
+      // Don't update if it's still the same pick
+      if(data.draftId == this.state.draftState.draftId
+      && data.packNumber == this.state.draftState.packNumber
+      && data.pickNumber == this.state.draftState.pickNumber) {
+        return;
+      }
       data.draftPack = data.draftPack || [];
       data.pickedCards = data.pickedCards || [];
       data.processedCards = data.processedCards || [];
