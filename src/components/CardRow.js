@@ -45,14 +45,14 @@ export default class CardRow extends React.Component {
     render() {
         if (this.props.show) {
             return (
-                <div>
+                <Fragment>
                     {this.state.hover && <CardImage imageSource={this.state.imageSource} mousex={this.state.mousex} mousey={this.state.mousey} />}
                     <TableRow key={this.state.tableRow} onMouseEnter={this.handleMouseEnter} onMouseMove={this.handleMouseMove} onMouseLeave={this.handleMouseLeave}>
                         <TableRowColumn>{this.state.cardId}</TableRowColumn>
                         <TableRowColumn>{this.state.cardName}</TableRowColumn>
                         <TableRowColumn>{this.state.cardText}</TableRowColumn>
                     </TableRow>
-                </div>
+                </Fragment>
             );
         }
 
