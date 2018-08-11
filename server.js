@@ -13,7 +13,6 @@ const router = express.Router();
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/src"));
 
-console.log(__dirname);
 app.set("views", __dirname);
 app.set("view engine", "ejs");
 app.engine("html", require("ejs").renderFile);
