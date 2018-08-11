@@ -1,9 +1,6 @@
-import React from "react";
-import SearchBar from "material-ui-search-bar";
-import axios from "axios";
-import Table, { TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableHead } from "material-ui/Table";
+import React, { Component } from "react";
 
-export default class CardImage extends React.Component {
+export default class CardImage extends Component {
     constructor(props) {
         super(props);
     }
@@ -11,9 +8,13 @@ export default class CardImage extends React.Component {
     render() {
         if (this.props.imageSource != "") {
             const styles = {
-                position: "absolute",
-                top: this.props.mousey,
-                left: this.props.mousex
+                position: "fixed",
+                backfaceVisibility: "hidden",
+                WebkitTransform: `translateX(${this.props.mousex}px) translateY(${this.props.mousey}px)`,
+                transform: `translateX(${this.props.mousex}px) translateY(${this.props.mousey}px)`,
+                top: "0",
+                left: "0",
+                pointerEvents: "none"
             };
             return (
                 <div>

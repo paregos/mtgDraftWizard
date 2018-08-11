@@ -1,8 +1,5 @@
 import React from "react";
-import SearchBar from "material-ui-search-bar";
-import axios from "axios";
-import Table, { TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableHead } from "material-ui/Table";
-
+import { TableRow, TableRowColumn, TableHead } from "material-ui/Table";
 export default class CardRow extends React.Component {
     constructor(props) {
         super(props);

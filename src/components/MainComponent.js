@@ -24,7 +24,9 @@ export default class MainComponent extends React.Component {
             searchTerm: "",
             mousex: 0,
             mousey: 0,
-            imageSource: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=447137&type=card"
+            imageSource: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid=447137&type=card",
+            imageLoading: false,
+            imageTimeout: null
         };
     }
 
@@ -43,18 +45,40 @@ export default class MainComponent extends React.Component {
             });
     }
 
-    componentDidMount() {}
-
-    componentWillUnmount() {}
-
-    tick() {}
-
-    _onMouseMove(e) {
-        this.setState({ mousex: e.pageX, mousey: e.pageY });
+    changeImageSource(newImageSource) {
+        if (newImageSource !== this.state.imageSource) {
+            if (this.state.imageLoading) {
+                clearTimeout(this.state.imageTimeout);
+            }
+            this.setState(
+                {
+                    imageLoading: true,
+                    imageSource: "../img/spinner.gif"
+                },
+                () => {
+                    this.setImage(newImageSource);
+                }
+            );
+        }
     }
 
-    changeImageSource(newImageSource) {
-        this.setState({ imageSource: newImageSource });
+    setImage(src) {
+        this.setState({
+            imageTimeout: setTimeout(() => {
+                this.setState({
+                    imageLoading: false,
+                    imageSource: src,
+                    imageTimeout: null
+                });
+            }, 500)
+        });
+    }
+
+    _onMouseMove(e) {
+        e.persist();
+        window.requestAnimationFrame(() => {
+            this.setState({ mousex: e.pageX, mousey: e.pageY });
+        });
     }
 
     render() {
