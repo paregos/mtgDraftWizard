@@ -17,8 +17,9 @@ export default class MainComponent extends React.Component {
 
     componentDidMount() {
         this.setState({ isLoading: true });
+        var baseUrl = process.env.BASE_URL ? process.env.BASE_URL : "http://localhost:3010";
         axios
-            .get("http://localhost:3010/cards/all") // JSON File Path
+            .get(baseUrl + "/cards/all") // JSON File Path
             .then((response) => {
                 console.log(response);
                 this.setState({
