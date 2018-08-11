@@ -26,7 +26,9 @@ export default class CardImage extends Component {
                 transform: `translateX(${this.props.mousex + offsetX}px) translateY(${this.props.mousey + offsetY}px)`,
                 top: "0",
                 left: "0",
-                pointerEvents: "none"
+                pointerEvents: "none",
+                width: "20vw",
+                minWidth: "6em"
             };
             return (
                 <div>
