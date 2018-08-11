@@ -15,11 +15,12 @@ export default class MainComponent extends React.Component {
         };
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.setState({ isLoading: true });
         axios
-            .get("..//M19.json") // JSON File Path
+            .get("http://localhost:8080/cards/all") // JSON File Path
             .then((response) => {
+                console.log(response);
                 this.setState({
                     cardData: response.data.cards
                 });
