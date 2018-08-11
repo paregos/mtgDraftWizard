@@ -27,8 +27,8 @@ export default class CardImage extends Component {
                 top: "0",
                 left: "0",
                 pointerEvents: "none",
-                width: "20vw",
-                minWidth: "6em"
+                width: `${this.state.loading ? "2em" : "20vw"}`,
+                minWidth: `${this.state.loading ? "0em" : "6em"}`
             };
             return (
                 <div>
