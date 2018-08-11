@@ -1,23 +1,36 @@
-import React from "react";
-import SearchBar from "material-ui-search-bar";
-import axios from "axios";
-import Table, { TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableHead } from "material-ui/Table";
+import React, { Component } from "react";
+import spinner from "../img/spinner.gif";
 
-export default class CardImage extends React.Component {
+export default class CardImage extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            loading: true
+        };
+        this.handleImageLoaded = this.handleImageLoaded.bind(this);
     }
 
+    handleImageLoaded() {
+        this.setState({
+            loading: false
+        });
+    }
     render() {
         if (this.props.imageSource != "") {
+            const offsetX = this.state.loading ? 15 : 0;
+            const offsetY = this.state.loading ? -10 : 0;
             const styles = {
-                position: "absolute",
-                top: this.props.mousey,
-                left: this.props.mousex
+                position: "fixed",
+                backfaceVisibility: "hidden",
+                WebkitTransform: `translateX(${this.props.mousex + offsetX}px) translateY(${this.props.mousey + offsetY}px)`,
+                transform: `translateX(${this.props.mousex + offsetX}px) translateY(${this.props.mousey + offsetY}px)`,
+                top: "0",
+                left: "0",
+                pointerEvents: "none"
             };
             return (
                 <div>
-                    <img src={this.props.imageSource} style={styles} />
+                    <img src={this.state.loading ? spinner : this.props.imageSource} style={styles} onLoad={this.handleImageLoaded} />
                 </div>
             );
         }
