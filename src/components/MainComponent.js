@@ -101,8 +101,7 @@ export default class MainComponent extends React.Component {
         }
 
         return (
-            <div onMouseMove={this._onMouseMove.bind(this)}>
-                <CardImage imageSource={this.state.imageSource} mousex={this.state.mousex} mousey={this.state.mousey} />
+            <div>
                 <SearchBar
                     onChange={(value) => {
                         this.setState({ searchTerm: value.toLowerCase() });
