@@ -70,8 +70,8 @@ app.on('activate', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-const logPath = 'C:\\users\\hanzhi\\desktop\\output_log - Copy.txt';
-//const logPath = 'C:\\Users\\Hanzhi\\AppData\\LocalLow\\Wizards Of The Coast\\MTGA\\output_log.txt';
+//const logPath = 'C:\\users\\hanzhi\\desktop\\output_log - Copy.txt';
+const logPath = process.env.USERPROFILE + '\\AppData\\LocalLow\\Wizards Of The Coast\\MTGA\\output_log.txt';
 
 function updateDraftStatus() {
   fs.readFile(logPath, (err, data) => {
