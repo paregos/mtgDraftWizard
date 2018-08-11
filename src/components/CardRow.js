@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
-import { TableRow, TableRowColumn, TableHead } from "material-ui/Table";
-import { findDOMNode } from "react-dom";
+import { TableRow, TableRowColumn } from "material-ui/Table";
 import CardImage from "./CardImage";
 export default class CardRow extends React.Component {
     constructor(props) {

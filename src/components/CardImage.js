@@ -12,7 +12,7 @@ export default class CardImage extends Component {
 
     handleImageLoaded() {
         this.setState({
-            loading: true
+            loading: false
         });
     }
     render() {

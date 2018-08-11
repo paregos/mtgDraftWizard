@@ -1,9 +1,8 @@
 import React from "react";
 import SearchBar from "material-ui-search-bar";
 import axios from "axios";
-import Table, { TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn, TableHead } from "material-ui/Table";
+import Table, { TableBody, TableHeader, TableHeaderColumn, TableRow } from "material-ui/Table";
 import CardRow from "./CardRow";
-import CardImage from "./CardImage";
 
 export default class MainComponent extends React.Component {
     constructor(props) {
