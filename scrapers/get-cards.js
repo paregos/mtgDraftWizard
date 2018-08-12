@@ -16,7 +16,7 @@ function writeCards(cards) {
 
             return new Promise((resolve, reject) => {
                 // Write to json for use by the electron client
-                fs.writeFile("electron/cards.json", JSON.stringify(cards), (err) => {
+                fs.writeFile("electron/cards.json", JSON.stringify(cardMappings), (err) => {
                     if (err) {
                         reject(err);
                     } else {
