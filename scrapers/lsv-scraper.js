@@ -18,6 +18,8 @@ const colors = [
     "green",
     // Most sets have golds, artifacts, and lands grouped together
     "gold-artifacts-and-lands",
+    // Amonkhet missed the 's' after artifacts
+    "gold-artifact-and-lands",
     // Kaladesh had artifacts separate
     "gold-lands",
     "artifacts",
