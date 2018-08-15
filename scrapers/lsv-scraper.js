@@ -94,16 +94,35 @@ function parsePage(url) {
         })
         .then((cards) => {
             console.log(`LSV: GET ${url}`);
-            return Promise.all(
-                Object.keys(cards).map((name) => {
-                    return db.Card.update({ lsvRating: cards[name].rating, lsvDescription: cards[name].description }, { where: { name: name } });
+            models.sequelize
+                .transaction(function(t) {
+                    var promises = [];
+                    Object.keys(cards).map((name) => {
+                        var newPromise = db.Card.update({ lsvRating: cards[name].rating, lsvDescription: cards[name].description }, { transaction: t }, { where: { name: name } });
+                        promises.push(newPromise);
+                    });
+                    return Promise.all(promises);
                 })
-            );
+                .catch((err) => {
+                    console.error(`LSV: ERR ${url}`);
+                });
         })
         .catch((err) => {
             console.error(`LSV: ERR ${url}`);
         });
 }
+//         .then((cards) => {
+//             console.log(`LSV: GET ${url}`);
+//             return Promise.all(
+//                 Object.keys(cards).map((name) => {
+//                     return db.Card.update({ lsvRating: cards[name].rating, lsvDescription: cards[name].description }, { where: { name: name } });
+//                 })
+//             );
+//         })
+//         .catch((err) => {
+//             console.error(`LSV: ERR ${url}`);
+//         });
+// }
 
 function scrape() {
     return db.syncedPromise.then(() => {
